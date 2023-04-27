@@ -1,5 +1,7 @@
 package br.com.etec.nickolas.cursoapi.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +18,7 @@ public class Cidade {
     private String nomecidade;
     private String uf;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "cidade")
     private List<Aluno> alunoscidade = new ArrayList<>();
 
@@ -54,5 +57,13 @@ public class Cidade {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    public List<Aluno> getAlunoscidade() {
+        return alunoscidade;
+    }
+
+    public void setAlunoscidade(List<Aluno> alunoscidade) {
+        this.alunoscidade = alunoscidade;
     }
 }

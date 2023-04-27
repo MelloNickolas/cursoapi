@@ -1,6 +1,8 @@
 package br.com.etec.nickolas.cursoapi.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +18,7 @@ public class Curso {
     private Integer id;
     private String nomecurso;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "curso")
     private List<Aluno> alunoscurso = new ArrayList<>();
 
@@ -48,7 +51,6 @@ public class Curso {
     public int hashCode() {
         return Objects.hash(id);
     }
-
 
     public List<Aluno> getAlunoscurso() {
         return alunoscurso;
