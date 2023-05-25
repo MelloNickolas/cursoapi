@@ -9,6 +9,7 @@ import org.springframework.data.util.Predicates;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -35,8 +36,16 @@ public class CursoRepositoryImpl implements CursoRepositoryQuery{
         criteria.orderBy(builder.asc(root.get("nomecurso")));
 
         TypedQuery<Curso> query = manager.createQuery(criteria);
+        adicionarRestricoesDePagianacao(query, pageable);
+
 
         return null;
+    }
+
+    private void adicionarRestricoesDePagianacao(TypedQuery<Curso> query, Pageable pageable) {
+        int paginaAtual = pageable.getPageNumber();
+        int totalRegistrosPorPagina = pageable.getPageSize();
+        int primeiroRegistroPágina = paginaAtual * totalRegistrosPorPagina;
     }
 
     private Predicate[] criarRestricoes(CursoFilter cursoFilter, CriteriaBuilder builder, Root<Curso> root) {
