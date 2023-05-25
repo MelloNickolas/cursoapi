@@ -21,4 +21,5 @@ public class CidadeFilter {
     public void setUf(String uf) {
         this.uf = uf;
     }
+
 }

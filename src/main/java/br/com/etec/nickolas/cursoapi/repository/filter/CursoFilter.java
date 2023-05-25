@@ -11,4 +11,5 @@ public class CursoFilter {
     public void setNomecurso(String nomecurso) {
         this.nomecurso = nomecurso;
     }
+
 }
