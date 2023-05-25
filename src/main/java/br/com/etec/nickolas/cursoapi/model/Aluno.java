@@ -13,13 +13,6 @@ public class Aluno {
     private Long id;
     private String nomealuno;
 
-    @ManyToOne
-    @JoinColumn(name = "idcurso")
-    private Curso curso;
-
-    @ManyToOne
-    @JoinColumn(name = "idcidade")
-    private Cidade cidade;
 
     public Long getId() {
         return id;
@@ -48,5 +41,33 @@ public class Aluno {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    //----------------------------------------------------------------------------------------------------------------
+
+    @ManyToOne
+    @JoinColumn(name = "idcurso")
+    private Curso curso;
+
+    public Curso getCurso() {
+        return curso;
+    }
+
+    public void setCurso(Curso curso) {
+        this.curso = curso;
+    }
+
+    //----------------------------------------------------------------------------------------------------------------
+
+    @ManyToOne
+    @JoinColumn(name = "idcidade")
+    private Cidade cidade;
+
+    public Cidade getCidade() {
+        return cidade;
+    }
+
+    public void setCidade(Cidade cidade) {
+        this.cidade = cidade;
     }
 }

@@ -18,11 +18,6 @@ public class Curso {
     private Integer id;
     private String nomecurso;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "curso")
-    private List<Aluno> alunoscurso = new ArrayList<>();
-
-
     public Integer getId() {
         return id;
     }
@@ -51,6 +46,12 @@ public class Curso {
     public int hashCode() {
         return Objects.hash(id);
     }
+
+    //----------------------------------------------------------------------------------------------------------------
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "curso")
+    private List<Aluno> alunoscurso = new ArrayList<>();
 
     public List<Aluno> getAlunoscurso() {
         return alunoscurso;
