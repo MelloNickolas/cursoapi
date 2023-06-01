@@ -69,7 +69,7 @@ public class CursoRepositoryImpl implements CursoRepositoryQuery{
 
         if(!StringUtils.isEmpty(cursoFilter.getNomecurso())){
             predicates.add(builder.like(builder.lower(root.get("nomecurso")),
-                    "%" + cursoFilter.getNomecurso().toLowerCase()));
+                    "%" + cursoFilter.getNomecurso().toLowerCase() + "%"));
         }
 
         return predicates.toArray(new Predicate[predicates.size()]);
