@@ -47,7 +47,7 @@ public class CidadeRepositoryImpl implements  CidadeRepositoryQuery{
 
         Predicate[] predicates = criarrestricoes(cidadefilter, builder, root);
         criteria.where(predicates);
-        criteria.orderBy(builder.asc(root.get("nomecurso")));
+        criteria.orderBy(builder.asc(root.get("nomecidade")));
 
         criteria.select(builder.count(root));
 
