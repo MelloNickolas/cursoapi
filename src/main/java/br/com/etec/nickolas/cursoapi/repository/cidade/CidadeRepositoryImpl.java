@@ -16,7 +16,6 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class CidadeRepositoryImpl implements  CidadeRepositoryQuery{
 
@@ -26,7 +25,7 @@ public class CidadeRepositoryImpl implements  CidadeRepositoryQuery{
     @Override
     public Page<Cidade> Filtrar(CidadeFilter cidadefilter, Pageable pageable){
 
-        CriteriaBuilder builder = manager.getCriteriaBuilder();;
+        CriteriaBuilder builder = manager.getCriteriaBuilder();
         CriteriaQuery<Cidade> criteria = builder.createQuery(Cidade.class);
         Root<Cidade> root = criteria.from(Cidade.class);
 
@@ -70,6 +69,10 @@ public class CidadeRepositoryImpl implements  CidadeRepositoryQuery{
         if (!StringUtils.isEmpty(cidadefilter.getNomecidade())){
             predicates.add(builder.like(builder.lower(root.get("nomecidade")),
                     "%" + cidadefilter.getNomecidade().toLowerCase() + "%"));
+        }
+        if (!StringUtils.isEmpty(cidadefilter.getUf())){
+            predicates.add(builder.like(builder.lower(root.get("uf")),
+                    "%" + cidadefilter.getUf().toLowerCase() + "%"));
         }
 
         return predicates.toArray(new Predicate[predicates.size()]);
