@@ -3,6 +3,7 @@ package br.com.etec.nickolas.cursoapi.repository.aluno;
 import br.com.etec.nickolas.cursoapi.model.Aluno;
 import br.com.etec.nickolas.cursoapi.model.Curso;
 import br.com.etec.nickolas.cursoapi.repository.filter.AlunoFilter;
+import br.com.etec.nickolas.cursoapi.repository.filter.CursoFilter;
 import br.com.etec.nickolas.cursoapi.repository.projections.AlunoDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -44,7 +45,21 @@ public class AlunoRepositoryImpl implements AlunoRepositoryQuery {
             return null;
     }
 
-    private void adicionarRestricoesDePaginacao(TypedQuery<AlunoDto> query, Pageable pageable) {
+    private Long total(AlunoFilter alunofilter){
+        CriteriaBuilder builder = manager.getCriteriaBuilder();
+        CriteriaQuery<Long> criteria = builder.createQuery(Long.class);
+        Root<Aluno> root = criteria.from(Aluno.class);
+
+        Predicate[] predicates = criarRestricoes(alunofilter, builder, root);
+        criteria.where(predicates);
+        criteria.orderBy(builder.asc(root.get("nomealuno")));
+
+        criteria.select(builder.count(root));
+
+        return manager.createQuery(criteria).getSingleResult();
+    }
+
+    private void adicionarRestricoesDePaginacao(TypedQuery<?> query, Pageable pageable) {
         int paginaAtual = pageable.getPageNumber();
         int totalRegistrosPorPagina = pageable.getPageSize();
         int primeiroRegistroPágina = paginaAtual * totalRegistrosPorPagina;
