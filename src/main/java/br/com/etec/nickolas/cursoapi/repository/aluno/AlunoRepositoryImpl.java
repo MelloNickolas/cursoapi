@@ -1,12 +1,11 @@
 package br.com.etec.nickolas.cursoapi.repository.aluno;
 
 import br.com.etec.nickolas.cursoapi.model.Aluno;
-import br.com.etec.nickolas.cursoapi.model.Curso;
 import br.com.etec.nickolas.cursoapi.repository.filter.AlunoFilter;
-import br.com.etec.nickolas.cursoapi.repository.filter.CursoFilter;
 import br.com.etec.nickolas.cursoapi.repository.projections.AlunoDto;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
 import javax.persistence.EntityManager;
@@ -18,7 +17,6 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class AlunoRepositoryImpl implements AlunoRepositoryQuery {
 
@@ -46,7 +44,7 @@ public class AlunoRepositoryImpl implements AlunoRepositoryQuery {
             TypedQuery<AlunoDto> query = manager.createQuery(criteria);
             adicionarRestricoesDePaginacao(query, pageable);
 
-            return null;
+            return new PageImpl<>(query.getResultList(), pageable, total(alunofilter));
     }
 
     private Long total(AlunoFilter alunofilter){
