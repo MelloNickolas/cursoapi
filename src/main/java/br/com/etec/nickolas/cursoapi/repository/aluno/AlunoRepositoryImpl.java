@@ -5,6 +5,7 @@ import br.com.etec.nickolas.cursoapi.model.Curso;
 import br.com.etec.nickolas.cursoapi.repository.filter.AlunoFilter;
 import br.com.etec.nickolas.cursoapi.repository.filter.CursoFilter;
 import br.com.etec.nickolas.cursoapi.repository.projections.AlunoDto;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -15,6 +16,9 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 public class AlunoRepositoryImpl implements AlunoRepositoryQuery {
 
@@ -57,6 +61,26 @@ public class AlunoRepositoryImpl implements AlunoRepositoryQuery {
         criteria.select(builder.count(root));
 
         return manager.createQuery(criteria).getSingleResult();
+    }
+
+    private Predicate[] criarRestricoes(AlunoFilter alunofilter, CriteriaBuilder builder, Root<Aluno> root) {
+        List<Predicate> predicates = new ArrayList<>();
+
+        if(!StringUtils.isEmpty(alunofilter.getNomealuno())){
+            predicates.add(builder.like(builder.lower(root.get("nomealuno")),
+                    "%" + alunofilter.getNomealuno().toLowerCase() + "%"));
+        }
+
+        if(!StringUtils.isEmpty(alunofilter.getNomecidade())){
+            predicates.add(builder.like(builder.lower(root.get("nomecidade")),
+                    "%" + alunofilter.getNomecidade().toLowerCase() + "%"));
+        }
+
+        if(!StringUtils.isEmpty(alunofilter.getNomecurso())){
+            predicates.add(builder.like(builder.lower(root.get("nomecurso")),
+                    "%" + alunofilter.getNomecurso().toLowerCase() + "%"));
+        }
+
     }
 
     private void adicionarRestricoesDePaginacao(TypedQuery<?> query, Pageable pageable) {
