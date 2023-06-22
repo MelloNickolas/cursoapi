@@ -63,6 +63,17 @@ public class AlunoRepositoryImpl implements AlunoRepositoryQuery {
         return manager.createQuery(criteria).getSingleResult();
     }
 
+
+    private void adicionarRestricoesDePaginacao(TypedQuery<?> query, Pageable pageable) {
+        int paginaAtual = pageable.getPageNumber();
+        int totalRegistrosPorPagina = pageable.getPageSize();
+        int primeiroRegistroPágina = paginaAtual * totalRegistrosPorPagina;
+
+        query.setFirstResult(primeiroRegistroPágina);
+        query.setMaxResults(totalRegistrosPorPagina);
+    }
+
+
     private Predicate[] criarRestricoes(AlunoFilter alunofilter, CriteriaBuilder builder, Root<Aluno> root) {
         List<Predicate> predicates = new ArrayList<>();
 
@@ -83,18 +94,9 @@ public class AlunoRepositoryImpl implements AlunoRepositoryQuery {
 
         if(!StringUtils.isEmpty(alunofilter.getUf())){
             predicates.add(builder.equal(builder.lower(root.get("cidade").get("uf")),
-                     alunofilter.getUf().toLowerCase()));
+                    alunofilter.getUf().toLowerCase()));
         }
 
         return predicates.toArray(new Predicate[predicates.size()]);
-    }
-
-    private void adicionarRestricoesDePaginacao(TypedQuery<?> query, Pageable pageable) {
-        int paginaAtual = pageable.getPageNumber();
-        int totalRegistrosPorPagina = pageable.getPageSize();
-        int primeiroRegistroPágina = paginaAtual * totalRegistrosPorPagina;
-
-        query.setFirstResult(primeiroRegistroPágina);
-        query.setMaxResults(totalRegistrosPorPagina);
     }
 }
