@@ -72,15 +72,21 @@ public class AlunoRepositoryImpl implements AlunoRepositoryQuery {
         }
 
         if(!StringUtils.isEmpty(alunofilter.getNomecidade())){
-            predicates.add(builder.like(builder.lower(root.get("nomecidade")),
+            predicates.add(builder.like(builder.lower(root.get("cidade").get("nomecidade")),
                     "%" + alunofilter.getNomecidade().toLowerCase() + "%"));
         }
 
         if(!StringUtils.isEmpty(alunofilter.getNomecurso())){
-            predicates.add(builder.like(builder.lower(root.get("nomecurso")),
+            predicates.add(builder.like(builder.lower(root.get("curso").get("nomecurso")),
                     "%" + alunofilter.getNomecurso().toLowerCase() + "%"));
         }
 
+        if(!StringUtils.isEmpty(alunofilter.getUf())){
+            predicates.add(builder.equal(builder.lower(root.get("cidade").get("uf")),
+                     alunofilter.getUf().toLowerCase()));
+        }
+
+        return predicates.toArray(new Predicate[predicates.size()]);
     }
 
     private void adicionarRestricoesDePaginacao(TypedQuery<?> query, Pageable pageable) {
